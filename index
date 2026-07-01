@@ -1,172 +1,182 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modman | ModmanTV</title>
-    
-    <!-- Connect Brand Google Fonts -->
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Inter:wght@300;400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #070b12;
-            --card-bg: #111827;
-            --border-color: #1f2937;
-            --text-primary: #ffffff;
-            --text-secondary: #9ca3af;
-            --accent-blue: #3b82f6;
-        }
 
-        * {
-            box-sizing: border-box;
-        }
+```
+<!-- Google Fonts (FIXED URL) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Inter', -apple-system, sans-serif;
-            margin: 0;
-            padding: 40px 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+<style>
+    :root {
+        --bg-color: #05080f;
+        --card-bg: #0d1320;
+        --border-color: #1e293b;
+        --text-primary: #ffffff;
+        --text-secondary: #94a3b8;
+        --accent-blue: #3b82f6;
+    }
 
-        .card {
-            max-width: 550px;
-            width: 100%;
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
+    * {
+        box-sizing: border-box;
+    }
 
-        .logo-container {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    body {
+        background: radial-gradient(circle at top, #0a0f1a, #05080f 60%);
+        color: var(--text-primary);
+        font-family: 'Inter', -apple-system, sans-serif;
+        margin: 0;
+        padding: 40px 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-        .logo-container img {
-            width: 100px;
-            height: auto;
-            border: none;
-        }
+    .card {
+        max-width: 560px;
+        width: 100%;
+        background: rgba(13, 19, 32, 0.85);
+        backdrop-filter: blur(10px);
+        border-radius: 18px;
+        border: 1px solid var(--border-color);
+        padding: 42px 32px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--text-primary);
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--text-primary);
-            font-size: 16px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 30px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-        }
+    .logo-container img {
+        width: 90px;
+        opacity: 0.95;
+    }
 
-        p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            font-weight: 300;
-        }
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 28px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-align: center;
+        margin: 10px 0 18px;
+    }
 
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin: 0;
-        }
+    h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 14px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-top: 32px;
+        margin-bottom: 10px;
+        color: #cbd5f5;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 6px;
+    }
 
-        li {
-            margin-bottom: 12px;
-            color: #d1d5db;
-            font-size: 15px;
-            font-weight: 300;
-            line-height: 1.6;
-        }
+    p {
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.75;
+        margin: 10px 0;
+    }
 
-        hr {
-            border: 0;
-            height: 1px;
-            background: var(--border-color);
-            margin: 30px 0;
-        }
+    em {
+        color: #e2e8f0;
+        font-style: normal;
+        font-weight: 500;
+    }
 
-        .site-link-container {
-            text-align: center;
-            margin-top: 20px;
-        }
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0;
+    }
 
-        .site-link {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: color 0.2s ease;
-        }
+    li {
+        margin-bottom: 10px;
+        color: #d1d5db;
+        font-size: 15px;
+        line-height: 1.6;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .site-link:hover {
-            color: #60a5fa;
-            text-decoration: underline;
-        }
-    </style>
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border-color);
+        margin: 30px 0;
+    }
+
+    .site-link-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .site-link {
+        font-family: 'Orbitron', sans-serif;
+        color: var(--accent-blue);
+        text-decoration: none;
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        transition: all 0.2s ease;
+    }
+
+    .site-link:hover {
+        color: #60a5fa;
+        text-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
+    }
+</style>
+```
+
 </head>
 <body>
 
-    <div class="card">
-        <!-- Logo Header -->
-        <div class="logo-container">
-            <img src="https://imgur.com" alt="Modman Logo">
-        </div>
+```
+<div class="card">
 
-        <!-- Your Exact Words and Structure Start Here -->
-        <h1>Modman</h1>
-
-        <p>This is the official website for Modman — a collection of apps, projects, and creative work.</p>
-
-        <h2>About</h2>
-
-        <p>Modman is where I build and share things I'm working on, learning, or experimenting with.</p>
-
-        <p>From mobile apps like *My Weight Diary* to content, tools, and future projects, everything connects here.</p>
-
-        <h2>What You'll Find</h2>
-
-        <ul>
-            <li>- 📱 Apps and tools</li>
-            <li>- 💻 Development projects</li>
-            <li>- 🎥 YouTube content</li>
-            <li>- 🧠 Experiments and ideas</li>
-            <li>- 🚀 Ongoing and future builds</li>
-        </ul>
-
-        <h2>Philosophy</h2>
-
-        <p>No strict niche — just building, improving, and sharing the process.</p>
-
-        <p>If it's something I'm working on, it belongs here.</p>
-
-        <hr>
+    <div class="logo-container">
+        <!-- REPLACE with your actual image link -->
+        <img src="YOUR_LOGO_URL_HERE" alt="Modman Logo">
     </div>
+
+    <h1>Modman</h1>
+
+    <p>This is the official website for Modman — a collection of apps, projects, and creative work.</p>
+
+    <h2>About</h2>
+
+    <p>Modman is where I build and share things I'm working on, learning, or experimenting with.</p>
+
+    <p>From mobile apps like <em>My Weight Diary</em> to content, tools, and future projects, everything connects here.</p>
+
+    <h2>What You'll Find</h2>
+
+    <ul>
+        <li>📱 Apps and tools</li>
+        <li>💻 Development projects</li>
+        <li>🎥 YouTube content</li>
+        <li>🧠 Experiments and ideas</li>
+        <li>🚀 Ongoing and future builds</li>
+    </ul>
+
+    <h2>Philosophy</h2>
+
+    <p>No strict niche — just building, improving, and sharing the process.</p>
+    <p>If it's something I'm working on, it belongs here.</p>
+
+    <hr>
+</div>
+```
 
 </body>
 </html>
