@@ -24,11 +24,13 @@ Modman is where I build and share things I'm working on, learning, or experiment
 From mobile apps like *My Weight Diary* to content, tools, and future projects, everything connects here.
 
 ## What You'll Find 
-- 📱 Apps and tools 
-- 💻 Development projects 
-- 🎥 YouTube content 
-- 🧠 Experiments and ideas 
-- 🚀 Ongoing and future builds 
+<ul style="list-style: none; padding-left: 0; margin: 0;">
+  <li>📱 Apps and tools</li>
+  <li>💻 Development projects</li>
+  <li>🎥 YouTube content</li>
+  <li>🧠 Experiments and ideas</li>
+  <li>🚀 Ongoing and future builds</li>
+</ul>
 
 ## Philosophy
 
