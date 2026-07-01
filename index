@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modman | ModmanTV</title>
+    
+    <!-- Connect Brand Google Fonts -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@300;400;500&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #070b12;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --accent-blue: #3b82f6;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            padding: 40px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            max-width: 550px;
+            width: 100%;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-container img {
+            width: 100px;
+            height: auto;
+            border: none;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-primary);
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--text-primary);
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #d1d5db;
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--border-color);
+            margin: 30px 0;
+        }
+
+        .site-link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .site-link {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+
+        .site-link:hover {
+            color: #60a5fa;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- Logo Header -->
+        <div class="logo-container">
+            <img src="https://imgur.com" alt="Modman Logo">
+        </div>
+
+        <!-- Your Exact Words and Structure Start Here -->
+        <h1>Modman</h1>
+
+        <p>This is the official website for Modman — a collection of apps, projects, and creative work.</p>
+
+        <h2>About</h2>
+
+        <p>Modman is where I build and share things I'm working on, learning, or experimenting with.</p>
+
+        <p>From mobile apps like *My Weight Diary* to content, tools, and future projects, everything connects here.</p>
+
+        <h2>What You'll Find</h2>
+
+        <ul>
+            <li>- 📱 Apps and tools</li>
+            <li>- 💻 Development projects</li>
+            <li>- 🎥 YouTube content</li>
+            <li>- 🧠 Experiments and ideas</li>
+            <li>- 🚀 Ongoing and future builds</li>
+        </ul>
+
+        <h2>Philosophy</h2>
+
+        <p>No strict niche — just building, improving, and sharing the process.</p>
+
+        <p>If it's something I'm working on, it belongs here.</p>
+
+        <hr>
+    </div>
+
+</body>
+</html>
