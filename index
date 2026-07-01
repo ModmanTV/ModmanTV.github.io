@@ -3,38 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modman | Official Hub</title>
-    <!-- Brand Fonts: Inter & Orbitron -->
-    <link href="https://googleapis.com" rel="stylesheet">
+    <title>Modman</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
     <style>
-        :root { --bg: #070b12; --card: #111827; --border: #1f2937; --text: #fff; --sub: #9ca3af; --acc: #3b82f6; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; padding: 40px 15px; display: flex; justify-content: center; min-height: 100vh; }
-        .card { max-width: 550px; width: 100%; background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 40px 30px; }
-        .logo { text-align: center; margin-bottom: 25px; }
-        .logo img { width: 100px; }
-        h1 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; text-align: center; }
-        h2 { font-family: 'Orbitron', sans-serif; font-size: 16px; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-        p, li { color: var(--sub); font-size: 15px; line-height: 1.7; }
-        ul { list-style-type: none; padding: 0; }
-        .site-link { color: var(--acc); text-decoration: none; font-family: 'Orbitron', sans-serif; }
+        :root {
+            --bg: #05070c;
+            --panel: #0c111b;
+            --text: #ffffff;
+            --muted: #9aa4b2;
+            --blue: #3b82f6;
+            --border: #1f2937;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background: radial-gradient(circle at top, #0b1220, var(--bg) 60%);
+            color: var(--text);
+        }
+
+        /* Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-family: "Orbitron", sans-serif;
+            font-size: 48px;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .subtitle {
+            margin-top: 15px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 12px;
+            color: var(--blue);
+            letter-spacing: 1px;
+        }
+
+        /* Sections */
+        section {
+            margin-top: 50px;
+            padding: 25px;
+            background: rgba(12, 17, 27, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            backdrop-filter: blur(8px);
+        }
+
+        h2 {
+            font-family: "Orbitron", sans-serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-top: 0;
+            color: #cfe3ff;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        ul {
+            padding-left: 0;
+            list-style: none;
+            margin: 15px 0 0;
+        }
+
+        li {
+            padding: 8px 0;
+            color: #d1d5db;
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .glow {
+            color: var(--blue);
+        }
     </style>
 </head>
+
 <body>
-    <div class="card">
-        <div class="logo"><img src="https://imgur.com" alt="Modman Logo"></div>
-        <h1>Modman</h1>
-        <p>Official hub for apps, projects, and creative work.</p>
-        <h2>About</h2>
-        <p>Building, learning, and experimenting—from apps to content.</p>
-        <h2>What You'll Find</h2>
-        <ul>
-            <li>📱 Apps/Tools</li>
-            <li>💻 Projects</li>
-            <li>🎥 Content</li>
-            <li>🚀 Future Builds</li>
-        </ul>
-        <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
-        <a href="https://github.io" class="site-link">https://github.io</a>
+
+    <div class="container">
+
+        <!-- HERO -->
+        <div class="hero">
+            <h1 class="title">MODMAN</h1>
+            <p class="subtitle">
+                This is the official website for Modman — a collection of apps, projects, and creative work.
+            </p>
+            <div class="badge">BUILD • LEARN • SHIP</div>
+        </div>
+
+        <!-- ABOUT -->
+        <section>
+            <h2>ABOUT</h2>
+            <p>
+                Modman is where I build and share things I'm working on, learning, or experimenting with.
+            </p>
+            <p>
+                From mobile apps like <span class="glow">My Weight Diary</span> to content, tools, and future projects,
+                everything connects here.
+            </p>
+        </section>
+
+        <!-- WHAT YOU'LL FIND -->
+        <section>
+            <h2>WHAT YOU'LL FIND</h2>
+            <ul>
+                <li>📱 Apps and tools</li>
+                <li>💻 Development projects</li>
+                <li>🎥 YouTube content</li>
+                <li>🧠 Experiments and ideas</li>
+                <li>🚀 Ongoing and future builds</li>
+            </ul>
+        </section>
+
+        <!-- PHILOSOPHY -->
+        <section>
+            <h2>PHILOSOPHY</h2>
+            <p>
+                No strict niche — just building, improving, and sharing the process.
+            </p>
+            <p>
+                If it's something I'm working on, it belongs here.
+            </p>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            © <span class="glow">Modman</span> — Built with intent.
+        </footer>
+
     </div>
+
 </body>
 </html>
