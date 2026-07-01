@@ -52,6 +52,8 @@
         Launch Hub Interface
       </a>
     </div>
+Visit the live site:
+https://modmanTV.github.io
 
   </div>
 </div>
