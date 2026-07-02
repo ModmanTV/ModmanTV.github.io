@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Weight Diary</title>
+    <meta name="description" content="Track. Analyze. Achieve. My Weight Diary is a simple weight tracking app for Android.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #05070c;
+            --panel: #0c111b;
+            --panel-alt: #10182a;
+            --text: #ffffff;
+            --muted: #9aa4b2;
+            --cyan: #22e2ff;
+            --cyan-dim: #0f8fa8;
+            --border: #1f2937;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background: radial-gradient(circle at top, #0b1220, var(--bg) 60%);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 70px 20px 60px;
+        }
+
+        /* HERO */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            margin-bottom: 70px;
+        }
+
+        .hero-copy { flex: 1; min-width: 280px; }
+
+        .title-lockup { margin-bottom: 26px; }
+
+        .title-lockup .brand {
+            display: block;
+            font-family: "Orbitron", sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 4px;
+            color: #ffffff;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .title-lockup .name {
+            display: block;
+            font-family: "Orbitron", sans-serif;
+            font-weight: 800;
+            font-size: 40px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--cyan);
+            text-shadow:
+                0 0 10px rgba(34,226,255,0.5),
+                0 0 30px rgba(34,226,255,0.3);
+            line-height: 1.1;
+        }
+
+        .tagline {
+            font-size: 17px;
+            color: #d1d5db;
+            margin: 0 0 10px;
+        }
+
+        .tagline .accent { color: var(--cyan); }
+
+        .hero-copy p.sub {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+            max-width: 420px;
+            margin: 0 0 30px;
+        }
+
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: "Orbitron", sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 15px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: #05070c;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(34,226,255,0.25);
+        }
+
+        .btn-disabled {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            cursor: default;
+        }
+
+        /* PHONE MOCKUP */
+        .phone-wrap {
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .phone {
+            width: 240px;
+            aspect-ratio: 9 / 19.5;
+            background: #000;
+            border-radius: 34px;
+            border: 3px solid #2a3444;
+            padding: 10px;
+            box-shadow:
+                0 0 0 1px rgba(34,226,255,0.15),
+                0 20px 60px rgba(0,0,0,0.6),
+                0 0 60px rgba(34,226,255,0.12);
+            position: relative;
+        }
+
+        .phone::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 18px;
+            background: #000;
+            border-radius: 0 0 14px 14px;
+            z-index: 2;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--panel);
+        }
+
+        .phone-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            display: block;
+        }
+
+        /* SECTIONS */
+        section {
+            margin-top: 40px;
+            padding: 32px 25px;
+            background: rgba(12, 17, 27, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        h2 {
+            font-family: "Orbitron", sans-serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            margin: 0 0 26px;
+            color: #cfe3ff;
+            text-align: center;
+        }
+
+        /* FEATURES */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .feature .icon {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+
+        .feature .f-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .feature .f-sub {
+            font-size: 12.5px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* BETA CALLOUT */
+        .beta-callout {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            background: var(--panel-alt);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 26px 28px;
+            margin-top: 40px;
+        }
+
+        .beta-callout .bc-text h3 {
+            font-family: "Orbitron", sans-serif;
+            font-size: 15px;
+            letter-spacing: 1px;
+            margin: 0 0 8px;
+            color: var(--cyan);
+        }
+
+        .beta-callout .bc-text p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            margin-top: 55px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .glow { color: var(--cyan); }
+
+        @media (max-width: 720px) {
+            .hero { flex-direction: column; text-align: center; }
+            .hero-copy p.sub { margin-left: auto; margin-right: auto; }
+            .btn-row { justify-content: center; }
+            .title-lockup .name { font-size: 32px; }
+            .features { grid-template-columns: repeat(2, 1fr); }
+            .beta-callout { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="hero">
+            <div class="hero-copy">
+                <div class="title-lockup">
+                    <span class="brand">MY WEIGHT</span>
+                    <span class="name">Diary</span>
+                </div>
+                <p class="tagline">Track. Analyze. <span class="accent">Achieve.</span></p>
+                <p class="sub">
+                    A simple weight tracking app for Android. Log entries, watch your trend line move, and stay consistent — without the clutter.
+                </p>
+                <div class="btn-row">
+                    <a href="#" class="btn btn-disabled">Coming Soon to Play Store</a>
+                    <a href="beta/" class="btn btn-primary">Join the Closed Test</a>
+                </div>
+            </div>
+
+            <div class="phone-wrap">
+                <div class="phone">
+                    <div class="phone-screen">
+                        <img src="overview-screenshot.png" alt="My Weight Diary app overview screen">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <h2>WHAT IT DOES</h2>
+            <div class="features">
+                <div class="feature">
+                    <div class="icon">⚖️</div>
+                    <div class="f-title">Track</div>
+                    <div class="f-sub">Log your weight in seconds</div>
+                </div>
+                <div class="feature">
+                    <div class="icon">📈</div>
+                    <div class="f-title">Visualize</div>
+                    <div class="f-sub">Watch your trend line move</div>
+                </div>
+                <div class="feature">
+                    <div class="icon">🎯</div>
+                    <div class="f-title">Reach Goals</div>
+                    <div class="f-sub">Set a target, track progress</div>
+                </div>
+                <div class="feature">
+                    <div class="icon">🔥</div>
+                    <div class="f-title">Stay Consistent</div>
+                    <div class="f-sub">Simple enough to stick with</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="beta-callout">
+            <div class="bc-text">
+                <h3>Closed Test Now Open</h3>
+                <p>Get free access before public launch and help shape the app along the way.</p>
+            </div>
+            <a href="beta/" class="btn btn-primary">Learn More</a>
+        </div>
+
+        <footer>
+            Built by <span class="glow">ModmanTV</span>
+        </footer>
+
+    </div>
+
+</body>
+</html>
