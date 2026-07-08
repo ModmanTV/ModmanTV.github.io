@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Remover — ModmanTV Tools</title>
+    <meta name="description" content="Remove solid or simple backgrounds from images instantly in your browser. Nothing is uploaded — it all runs locally.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #05070c;
+            --panel: #0c111b;
+            --panel-alt: #10182a;
+            --checker: #1a2333;
+            --text: #ffffff;
+            --muted: #9aa4b2;
+            --cyan: #22e2ff;
+            --cyan-dim: #0f8fa8;
+            --border: #1f2937;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background: radial-gradient(circle at top, #0b1220, var(--bg) 60%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 60px 20px 60px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .brand {
+            display: block;
+            font-family: "Orbitron", sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-family: "Orbitron", sans-serif;
+            font-weight: 800;
+            font-size: 28px;
+            letter-spacing: 1px;
+            margin: 0 0 16px;
+        }
+
+        h1 span {
+            color: var(--cyan);
+            text-shadow: 0 0 20px rgba(34,226,255,0.35);
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        /* DROPZONE */
+        .dropzone {
+            border: 1.5px dashed var(--border);
+            border-radius: 16px;
+            background: rgba(12, 17, 27, 0.6);
+            padding: 60px 20px;
+            text-align: center;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .dropzone.dragover {
+            border-color: var(--cyan);
+            background: rgba(34, 226, 255, 0.05);
+        }
+
+        .dropzone .icon {
+            font-size: 28px;
+            color: var(--cyan);
+            margin-bottom: 14px;
+        }
+
+        .dropzone p {
+            color: var(--muted);
+            font-size: 15px;
+            margin: 6px 0;
+        }
+
+        .dropzone .hint {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: var(--cyan);
+            font-size: 15px;
+            font-family: inherit;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        /* WORKSPACE */
+        .workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .canvas-wrap {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 30px rgba(34,226,255,0.1);
+            background-image:
+                linear-gradient(45deg, var(--checker) 25%, transparent 25%),
+                linear-gradient(-45deg, var(--checker) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, var(--checker) 75%),
+                linear-gradient(-45deg, transparent 75%, var(--checker) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-color: var(--panel);
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: crosshair;
+        }
+
+        .tip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: #d1d5db;
+            background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* CONTROLS */
+        .controls {
+            background: rgba(12, 17, 27, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 110px 1fr 34px;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .control-row label {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .control-row span {
+            font-size: 13px;
+            color: var(--cyan);
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--cyan);
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(34,226,255,0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: none;
+            background: var(--cyan);
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(34,226,255,0.5);
+        }
+
+        .swatch-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .swatch {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            font-family: "Orbitron", sans-serif;
+            font-weight: 700;
+            font-size: 12.5px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 13px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: #05070c;
+            flex: 1;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34,226,255,0.25);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            color: var(--text);
+            border-color: var(--cyan-dim);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .glow { color: var(--cyan); }
+
+        @media (max-width: 480px) {
+            .control-row {
+                grid-template-columns: 90px 1fr 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <header>
+            <span class="brand">MODMANTV TOOLS</span>
+            <h1>Background <span>Remover</span></h1>
+            <p>Click a background colour in your image to erase it. Everything runs in your browser — nothing is ever uploaded anywhere.</p>
+        </header>
+
+        <div id="dropzone" class="dropzone">
+            <input type="file" id="fileInput" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" hidden>
+            <div class="icon">⬆</div>
+            <p>Drag and drop an image, or <button id="browseBtn" class="link-btn" type="button">browse a file</button></p>
+            <p class="hint">PNG · JPG · WEBP · GIF · BMP</p>
+        </div>
+
+        <div id="workspace" class="workspace" hidden>
+            <div class="canvas-wrap">
+                <canvas id="canvas"></canvas>
+                <p class="tip" id="tip">Click anywhere on the background to remove that colour</p>
+            </div>
+
+            <div class="controls">
+                <div class="control-row">
+                    <label for="tolerance">Tolerance</label>
+                    <input type="range" id="tolerance" min="0" max="100" value="30">
+                    <span id="toleranceVal">30</span>
+                </div>
+                <div class="control-row">
+                    <label for="feather">Edge softness</label>
+                    <input type="range" id="feather" min="0" max="60" value="20">
+                    <span id="featherVal">20</span>
+                </div>
+                <div class="swatch-row">
+                    <span>Picked colour:</span>
+                    <div id="swatch" class="swatch"></div>
+                </div>
+                <div class="btn-row">
+                    <button id="resetBtn" class="btn-secondary" type="button">Reset</button>
+                    <button id="newImageBtn" class="btn-secondary" type="button">New image</button>
+                    <button id="downloadBtn" class="btn-primary" type="button" disabled>Download PNG</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Built by <span class="glow">ModmanTV</span>
+        </footer>
+
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const browseBtn = document.getElementById('browseBtn');
+        const dropzone = document.getElementById('dropzone');
+        const workspace = document.getElementById('workspace');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const toleranceSlider = document.getElementById('tolerance');
+        const featherSlider = document.getElementById('feather');
+        const toleranceVal = document.getElementById('toleranceVal');
+        const featherVal = document.getElementById('featherVal');
+        const swatch = document.getElementById('swatch');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const newImageBtn = document.getElementById('newImageBtn');
+        const tip = document.getElementById('tip');
+
+        let originalImageData = null;
+        let width = 0, height = 0;
+        let pickedColor = null;
+
+        const MAX_DIMENSION = 3000; // keeps pixel-loop performance smooth in-browser
+
+        browseBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) loadImage(e.target.files[0]);
+        });
+
+        ['dragover', 'dragenter'].forEach(evt => dropzone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            dropzone.classList.add('dragover');
+        }));
+        ['dragleave', 'drop'].forEach(evt => dropzone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+        }));
+        dropzone.addEventListener('drop', (e) => {
+            const file = e.dataTransfer.files[0];
+            if (file) loadImage(file);
+        });
+
+        function loadImage(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Please choose an image file.');
+                return;
+            }
+            const img = new Image();
+            const url = URL.createObjectURL(file);
+            img.onload = () => {
+                let w = img.naturalWidth, h = img.naturalHeight;
+                const scale = Math.min(1, MAX_DIMENSION / Math.max(w, h));
+                w = Math.round(w * scale);
+                h = Math.round(h * scale);
+
+                canvas.width = w;
+                canvas.height = h;
+                width = w;
+                height = h;
+
+                ctx.clearRect(0, 0, w, h);
+                ctx.drawImage(img, 0, 0, w, h);
+                originalImageData = ctx.getImageData(0, 0, w, h);
+
+                URL.revokeObjectURL(url);
+                dropzone.hidden = true;
+                workspace.hidden = false;
+                pickedColor = null;
+                swatch.style.background = 'transparent';
+                downloadBtn.disabled = true;
+                tip.textContent = 'Click anywhere on the background to remove that colour';
+            };
+            img.onerror = () => {
+                alert("Couldn't load that file. If it's a HEIC photo from an iPhone, export it as JPG or PNG first — browsers can't decode HEIC directly.");
+            };
+            img.src = url;
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (!originalImageData) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.min(width - 1, Math.max(0, Math.round((e.clientX - rect.left) * (canvas.width / rect.width))));
+            const y = Math.min(height - 1, Math.max(0, Math.round((e.clientY - rect.top) * (canvas.height / rect.height))));
+            const idx = (y * width + x) * 4;
+
+            pickedColor = {
+                r: originalImageData.data[idx],
+                g: originalImageData.data[idx + 1],
+                b: originalImageData.data[idx + 2]
+            };
+            swatch.style.background = `rgb(${pickedColor.r},${pickedColor.g},${pickedColor.b})`;
+            tip.textContent = 'Click a different spot to pick again, or adjust the sliders below';
+            applyRemoval();
+        });
+
+        toleranceSlider.addEventListener('input', () => {
+            toleranceVal.textContent = toleranceSlider.value;
+            if (pickedColor) applyRemoval();
+        });
+        featherSlider.addEventListener('input', () => {
+            featherVal.textContent = featherSlider.value;
+            if (pickedColor) applyRemoval();
+        });
+
+        function applyRemoval() {
+            const tolerance = parseInt(toleranceSlider.value, 10);
+            const feather = Math.max(1, parseInt(featherSlider.value, 10));
+            const src = originalImageData.data;
+            const out = ctx.createImageData(width, height);
+            const dst = out.data;
+
+            const maxDist = 441.7; // sqrt(255^2 * 3) — largest possible RGB distance
+            const innerT = (tolerance / 100) * maxDist;
+            const outerT = innerT + (feather / 100) * maxDist;
+
+            for (let i = 0; i < src.length; i += 4) {
+                const r = src[i], g = src[i + 1], b = src[i + 2], a = src[i + 3];
+                const dr = r - pickedColor.r, dg = g - pickedColor.g, db = b - pickedColor.b;
+                const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+
+                let alpha;
+                if (dist <= innerT) {
+                    alpha = 0;
+                } else if (dist >= outerT) {
+                    alpha = a;
+                } else {
+                    const t = (dist - innerT) / (outerT - innerT);
+                    alpha = Math.round(a * t);
+                }
+
+                dst[i] = r;
+                dst[i + 1] = g;
+                dst[i + 2] = b;
+                dst[i + 3] = alpha;
+            }
+
+            ctx.putImageData(out, 0, 0);
+            downloadBtn.disabled = false;
+        }
+
+        resetBtn.addEventListener('click', () => {
+            if (!originalImageData) return;
+            ctx.putImageData(originalImageData, 0, 0);
+            pickedColor = null;
+            swatch.style.background = 'transparent';
+            downloadBtn.disabled = true;
+            tip.textContent = 'Click anywhere on the background to remove that colour';
+        });
+
+        newImageBtn.addEventListener('click', () => {
+            workspace.hidden = true;
+            dropzone.hidden = false;
+            fileInput.value = '';
+            originalImageData = null;
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            canvas.toBlob((blob) => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'transparent.png';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            }, 'image/png');
+        });
+    </script>
+
+</body>
+</html>
