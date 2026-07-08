@@ -127,6 +127,22 @@
             color: var(--muted);
         }
 
+        .video-wrap {
+            max-width: 300px;
+            margin: 34px auto 0;
+            aspect-ratio: 9 / 16;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 30px rgba(34,226,255,0.15);
+        }
+
+        .video-wrap iframe {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
         /* SECTIONS */
         section {
             margin-top: 40px;
@@ -306,6 +322,16 @@
             <div class="cta-wrap">
                 <a href="https://forms.gle/Jpf1rHW8zy7TPUkp6" class="cta">Sign up to test</a>
                 <div class="cta-sub">Takes under a minute · Google Form</div>
+            </div>
+
+            <div class="video-wrap">
+                <iframe
+                    src="https://www.youtube.com/embed/rSNOYZ9UTR0?autoplay=1&mute=1&loop=1&playlist=rSNOYZ9UTR0&playsinline=1&controls=1&rel=0"
+                    title="My Weight Diary — Preview"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
             </div>
         </div>
 
