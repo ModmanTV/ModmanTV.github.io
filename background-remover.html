@@ -330,9 +330,9 @@
                     <span id="toleranceVal">30</span>
                 </div>
                 <div class="control-row">
-                    <label for="feather">Edge softness</label>
-                    <input type="range" id="feather" min="0" max="60" value="20">
-                    <span id="featherVal">20</span>
+                    <label for="feather">Edge softness (px)</label>
+                    <input type="range" id="feather" min="0" max="50" value="8">
+                    <span id="featherVal">8</span>
                 </div>
                 <div class="swatch-row">
                     <span>Picked colour:</span>
@@ -457,38 +457,94 @@
 
         function applyRemoval() {
             const tolerance = parseInt(toleranceSlider.value, 10);
-            const feather = Math.max(1, parseInt(featherSlider.value, 10));
+            const radius = parseInt(featherSlider.value, 10);
             const src = originalImageData.data;
-            const out = ctx.createImageData(width, height);
-            const dst = out.data;
-
             const maxDist = 441.7; // sqrt(255^2 * 3) — largest possible RGB distance
             const innerT = (tolerance / 100) * maxDist;
-            const outerT = innerT + (feather / 100) * maxDist;
 
-            for (let i = 0; i < src.length; i += 4) {
-                const r = src[i], g = src[i + 1], b = src[i + 2], a = src[i + 3];
-                const dr = r - pickedColor.r, dg = g - pickedColor.g, db = b - pickedColor.b;
+            // Step 1: hard color-distance mask (0 or original alpha, no ramp yet)
+            let alphaMask = new Float32Array(width * height);
+            for (let i = 0, p = 0; i < src.length; i += 4, p++) {
+                const dr = src[i] - pickedColor.r, dg = src[i + 1] - pickedColor.g, db = src[i + 2] - pickedColor.b;
                 const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+                alphaMask[p] = dist <= innerT ? 0 : src[i + 3];
+            }
 
-                let alpha;
-                if (dist <= innerT) {
-                    alpha = 0;
-                } else if (dist >= outerT) {
-                    alpha = a;
-                } else {
-                    const t = (dist - innerT) / (outerT - innerT);
-                    alpha = Math.round(a * t);
+            // Step 2: real spatial blur on the alpha channel (three box-blur passes ≈ gaussian)
+            if (radius > 0) {
+                for (let pass = 0; pass < 3; pass++) {
+                    alphaMask = boxBlurHorizontal(alphaMask, width, height, radius);
+                    alphaMask = boxBlurVertical(alphaMask, width, height, radius);
                 }
+            }
 
-                dst[i] = r;
-                dst[i + 1] = g;
-                dst[i + 2] = b;
-                dst[i + 3] = alpha;
+            // Step 3: rebuild image, de-fringing semi-transparent edge pixels so the old
+            // background colour doesn't bleed through as a colour halo
+            const out = ctx.createImageData(width, height);
+            const dst = out.data;
+            for (let i = 0, p = 0; i < src.length; i += 4, p++) {
+                const a = Math.round(alphaMask[p]);
+                if (a > 0 && a < 255) {
+                    const af = a / 255;
+                    dst[i]     = clamp255((src[i]     - (1 - af) * pickedColor.r) / af);
+                    dst[i + 1] = clamp255((src[i + 1] - (1 - af) * pickedColor.g) / af);
+                    dst[i + 2] = clamp255((src[i + 2] - (1 - af) * pickedColor.b) / af);
+                } else {
+                    dst[i] = src[i];
+                    dst[i + 1] = src[i + 1];
+                    dst[i + 2] = src[i + 2];
+                }
+                dst[i + 3] = a;
             }
 
             ctx.putImageData(out, 0, 0);
             downloadBtn.disabled = false;
+        }
+
+        function clamp255(v) {
+            return v < 0 ? 0 : v > 255 ? 255 : v;
+        }
+
+        // Efficient sliding-window box blur — O(width*height) per pass regardless of radius
+        function boxBlurHorizontal(src, w, h, r) {
+            const dst = new Float32Array(w * h);
+            const windowSize = r * 2 + 1;
+            for (let y = 0; y < h; y++) {
+                const rowStart = y * w;
+                let sum = 0;
+                for (let k = -r; k <= r; k++) {
+                    const xi = Math.min(w - 1, Math.max(0, k));
+                    sum += src[rowStart + xi];
+                }
+                dst[rowStart] = sum / windowSize;
+                for (let x = 1; x < w; x++) {
+                    const addIdx = Math.min(w - 1, x + r);
+                    const remIdx = Math.max(0, x - r - 1);
+                    sum += src[rowStart + addIdx] - src[rowStart + remIdx];
+                    dst[rowStart + x] = sum / windowSize;
+                }
+            }
+            return dst;
+        }
+
+        function boxBlurVertical(src, w, h, r) {
+            const dst = new Float32Array(w * h);
+            const windowSize = r * 2 + 1;
+            for (let x = 0; x < w; x++) {
+                let sum = 0;
+                for (let k = -r; k <= r; k++) {
+                    const yi = Math.min(h - 1, Math.max(0, k));
+                    sum += src[yi * w + x];
+                }
+                dst[x] = sum / windowSize;
+                for (let y = 1; y < h; y++) {
+                    const addIdx = Math.min(h - 1, y + r);
+                    const remIdx = Math.max(0, y - r - 1);
+                    sum += src[addIdx * w + x] - src[remIdx * w + x];
+                    dst[y * w + x] = sum / windowSize;
+                }
+            }
+            return dst;
         }
 
         resetBtn.addEventListener('click', () => {
