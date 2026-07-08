@@ -478,31 +478,18 @@
                 }
             }
 
-            // Step 3: rebuild image, de-fringing semi-transparent edge pixels so the old
-            // background colour doesn't bleed through as a colour halo
+            // Step 3: rebuild image — original colours untouched, only alpha changes
             const out = ctx.createImageData(width, height);
             const dst = out.data;
             for (let i = 0, p = 0; i < src.length; i += 4, p++) {
-                const a = Math.round(alphaMask[p]);
-                if (a > 0 && a < 255) {
-                    const af = a / 255;
-                    dst[i]     = clamp255((src[i]     - (1 - af) * pickedColor.r) / af);
-                    dst[i + 1] = clamp255((src[i + 1] - (1 - af) * pickedColor.g) / af);
-                    dst[i + 2] = clamp255((src[i + 2] - (1 - af) * pickedColor.b) / af);
-                } else {
-                    dst[i] = src[i];
-                    dst[i + 1] = src[i + 1];
-                    dst[i + 2] = src[i + 2];
-                }
-                dst[i + 3] = a;
+                dst[i] = src[i];
+                dst[i + 1] = src[i + 1];
+                dst[i + 2] = src[i + 2];
+                dst[i + 3] = Math.round(alphaMask[p]);
             }
 
             ctx.putImageData(out, 0, 0);
             downloadBtn.disabled = false;
-        }
-
-        function clamp255(v) {
-            return v < 0 ? 0 : v > 255 ? 255 : v;
         }
 
         // Efficient sliding-window box blur — O(width*height) per pass regardless of radius
